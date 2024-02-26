@@ -45,12 +45,77 @@ void afisareAvion(struct Avion av4) {
 	}
 }
 
+struct Avion* vectorAvioane(struct Avion* avioane, int dimensiune) {
+	int k = 0;
+	for (int i = 0; i < dimensiune; i++) {
+		if (avioane[i].locuri % 2 == 0) {
+			k++;
+		}
+	}
+	struct Avion* avs = malloc(k * sizeof(avioane[0]));
+	for (int i = 0; i < dimensiune; i++) {
+		if (avioane[i].locuri % 2 == 0) {
+			avs[i] = avioane[i];
+		}
+	}
+	return avs;
+}
+
+struct Avion* vectorAvioaneNoi(struct Avion* avioane, int dimensiune) {
+	int k = 0;
+	for (int i = 0; i < dimensiune; i++) {
+		if (avioane[i].denumire[0] == "A") {
+			k++;
+		}
+	}
+	struct Avion* avs1 = malloc(k * sizeof(avioane[0]));
+	for (int i = 0; i < dimensiune; i++) {
+		if (avioane[i].denumire == "A") {
+			avs1[i] = avioane[i];
+		}
+	}
+	return avs1;
+}
+struct Avion* concatVect(struct Avion* av5, int dim1, struct Avion* av6, int dim2){
+	struct Avion* av7 = malloc((dim1+dim2)*sizeof(av5[0]));
+	for (int i = 0; i < dim1; i++) {
+		av7[i] = av5[i];
+	}
+	for (int i = dim1; i < dim1+dim2; i++) {
+		av7[i] = av6[i-dim1];
+	}
+	return av7;
+};
+
+void afisareVector(struct Avion* avv, int dimensiune) {
+	for (int i = 0; i < dimensiune; i++) {
+		afisareAvion(avv[i]);
+		printf("\n");
+	}
+}
+
 void main() {
 	struct Avion av = citireAvion();
 	printf("%d \n", minCodPasager(av));
 	modificareLocuri(&av, 20);
 	printf("%d \n", av.locuri);
 	afisareAvion(av);
+	
+
+	struct Avion* avioane = malloc(5*sizeof(struct Avion));
+	avioane[0] = av;
+	avioane[1] = av;
+	avioane[2] = av;
+	avioane[3] = av;
+	avioane[4] = av;
+
+	afisareVector(avioane,5);
+
+	afisareVector(concatVect(avioane,5,avioane,5),10);
+
+	afisareVector(vectorAvioane,5);
+	
+	afisareVector(vectorAvioaneNoi, 5);
 	free(av.denumire);
 	free(av.codPasager);
 }
