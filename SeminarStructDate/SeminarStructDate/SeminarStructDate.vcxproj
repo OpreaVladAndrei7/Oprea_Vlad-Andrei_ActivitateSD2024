@@ -22,7 +22,7 @@
     <ClCompile Include="seminar01.c" />
     <ClCompile Include="seminar02.c" />
     <ClCompile Include="seminar03.c" />
-    <ClCompile Include="taskSuplimentar1.c" />
+    <ClCompile Include="task-uriSuplimentare.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

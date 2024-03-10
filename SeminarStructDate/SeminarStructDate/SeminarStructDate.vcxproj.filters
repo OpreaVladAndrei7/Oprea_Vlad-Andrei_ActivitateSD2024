@@ -18,7 +18,7 @@
     <ClCompile Include="seminar01.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="taskSuplimentar1.c">
+    <ClCompile Include="task-uriSuplimentare.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="seminar02.c">
