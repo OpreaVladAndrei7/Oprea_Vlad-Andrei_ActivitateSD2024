@@ -36,5 +36,8 @@
     <ClCompile Include="seminar6.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="seminar7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
