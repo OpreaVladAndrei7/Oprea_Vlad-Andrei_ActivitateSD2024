@@ -42,5 +42,14 @@
     <ClCompile Include="seminar8.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="seminar10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="masini.txt" />
+    <Text Include="avioane.txt" />
+    <Text Include="tari.txt" />
+    <Text Include="Rezervari.txt" />
   </ItemGroup>
 </Project>
