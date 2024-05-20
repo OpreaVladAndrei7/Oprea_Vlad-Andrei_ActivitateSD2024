@@ -30,6 +30,7 @@
     <ClCompile Include="seminar7.c" />
     <ClCompile Include="seminar8.c" />
     <ClCompile Include="task-uriSuplimentare.c" />
+    <ClCompile Include="TaskSuplimentar11.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="avioane.txt" />
