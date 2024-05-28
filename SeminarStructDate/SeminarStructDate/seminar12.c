@@ -65,6 +65,7 @@ NodSecundar* inserareSecundara(NodSecundar* cap, NodPrincipal* info) {
 		while (p->next) {
 			p = p->next;
 		}
+		p->next = nou;
 		return cap;
 	}
 	else{
@@ -78,6 +79,154 @@ void inserareMuchie(int linieStart, int linieStop, NodPrincipal* graf) {
 	NodPrincipal* nodStop=cautaLinie(graf,linieStop);
 	nodStart->vecini = inserareSecundara(nodStart->vecini, nodStop);
 	nodStop->vecini = inserareSecundara(nodStop->vecini, nodStart);
+}
+
+void afisareAutobuz(Autobuz A) {
+	printf("%d are capatul la %s \n", A.linie, A.capatLinie);
+}
+
+#pragma region MyRegion
+
+typedef struct nodCoada nodCoada;
+
+struct nodCoada {
+	int id;
+	nodCoada* next;
+};
+
+void inserareCoada(nodCoada** cap, int id) {
+	nodCoada* nou = (nodCoada*)malloc(sizeof(nodCoada));
+	nou->id = id;
+	nou->next = NULL;
+	if (*cap) {
+		nodCoada* p = *cap;
+		while (p->next) {
+			p = p->next;
+		}
+		p->next = nou;
+	}
+	else {
+		*cap = nou;
+	}
+}
+
+void inserareStiva(nodCoada** cap, int id) {
+	nodCoada* nou = malloc(sizeof(nodCoada));
+	nou->id = id;
+	nou->next = *cap;
+	*cap = nou;
+}
+
+
+int extragereDinCoada(nodCoada** cap) {
+	if (*cap) {
+		int rezultat = (*cap)->id;
+		nodCoada* temp = (*cap)->next;
+		free(*cap);
+		*cap = temp;
+		return rezultat;
+	}
+	else {
+		return -1;
+	}
+}
+
+int extrageStiva(nodCoada** cap) {
+	return extragereDinCoada(cap);
+}
+
+int getNrNoduri(NodPrincipal* graf) {
+	int s = 0;
+	while (graf) {
+		s++;
+		graf = graf->next;
+	}
+	return s;
+}
+
+void afisareCuParcurgereInLatime(NodPrincipal* graf, int nodPlecare) {
+	//initializari
+	nodCoada* coada = NULL;
+	int nrNoduri = getNrNoduri(graf);
+	char* vizitate = malloc(sizeof(char)*nrNoduri);
+	for (int i = 0; i < nrNoduri; i++) {
+		vizitate[i] = 0;
+	}
+	inserareCoada(&coada, nodPlecare);
+	vizitate[nodPlecare] = 1;
+
+	while (coada) {
+		//extragem noudl din coada
+		int idNodCurent = extragereDinCoada(&coada);
+		NodPrincipal* nodCurent= cautaLinie(graf, idNodCurent);
+		NodSecundar* temp = nodCurent->vecini;
+		afisareAutobuz(nodCurent->info);
+		//inserare in coada si marcare ca vizitat fiecare vecin
+		while (temp) {
+			if (vizitate[
+				temp->nod->info.linie] == 0) {
+				vizitate[temp->nod->info.linie] = 1;
+				inserareCoada(&coada, temp->nod->info.linie);
+			}
+			temp = temp->next;
+		}
+	}
+	if (vizitate) {
+		free(vizitate);
+	}
+}
+
+void afisareCuParcurgereInAdancime(NodPrincipal* graf, int nodPlecare) {
+	//initializari
+	nodCoada* stiva = NULL;
+	int nrNoduri = getNrNoduri(graf);
+	char* vizitate = malloc(sizeof(char) * nrNoduri);
+	for (int i = 0; i < nrNoduri; i++) {
+		vizitate[i] = 0;
+	}
+	inserareStiva(&stiva, nodPlecare);
+	vizitate[nodPlecare] = 1;
+
+	while (stiva) {
+		//extragem noudl din coada
+		int idNodCurent = extragereDinCoada(&stiva);
+		NodPrincipal* nodCurent = cautaLinie(graf, idNodCurent);
+		NodSecundar* temp = nodCurent->vecini;
+		afisareAutobuz(nodCurent->info);
+		//inserare in coada si marcare ca vizitat fiecare vecin
+		while (temp) {
+			if (vizitate[temp->nod->info.linie] == 0) {
+				vizitate[temp->nod->info.linie] = 1;
+				inserareStiva(&stiva, temp->nod->info.linie);
+			}
+			temp = temp->next;
+		} 		
+	}
+	if (vizitate) {
+		free(vizitate);
+	}
+}
+
+#pragma endregion
+
+void stergereListVecinin(NodSecundar** cap) {
+	NodSecundar* p = (*cap);
+		while (p) {
+			NodSecundar* aux = p;
+			p = p->next;
+			free(aux);
+		}
+		*cap = NULL;
+}
+
+void stergereGraf(NodPrincipal** graf) {
+	while (*graf) {
+		free((*graf)->info.capatLinie);
+		stergereListVecinin(&(*graf)->vecini);
+		NodPrincipal* temp = (*graf);
+		*graf = temp->next;
+		free(temp);
+	}
 }
 
 void main() {
@@ -95,4 +244,8 @@ void main() {
 	inserareMuchie( 2, 4, graf);
 	inserareMuchie( 3, 4, graf);
 	
+	afisareCuParcurgereInLatime(graf, 0);
+	printf("\n\n");
+	afisareCuParcurgereInAdancime(graf, 0);
+	stergereGraf(&graf);
 }
